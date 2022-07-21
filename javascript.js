@@ -1,5 +1,7 @@
 function playRound () {
-    const playerSelection = prompt("Rock, Paper, or Scissors?")
+    const playerInput = prompt("Rock, Paper, or Scissors?")
+    var playerStringLower = playerInput.toLowerCase()
+    const playerSelection = playerStringLower.charAt(0).toUpperCase() + playerStringLower.slice(1)
 
 //RNG determines the choice of the CPU 
     
