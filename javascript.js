@@ -1,81 +1,101 @@
-function playRound () {
-    const playerInput = prompt("Rock, Paper, or Scissors?")
-    var playerStringLower = playerInput.toLowerCase()
-    const playerSelection = playerStringLower.charAt(0).toUpperCase() + playerStringLower.slice(1)
+
+const buttons = document.querySelectorAll('button')
+let playerScore = 0
+let computerScore = 0
+
+
+
 
 //RNG determines the choice of the CPU 
     
-    function getComputerChoice() {
-        let randomNumber = Math.floor(Math.random()*100);
-        var cpuNum = randomNumber % 3
-        if (cpuNum == 0){;
-            var cpuChoice = "Rock";
-        } else if (cpuNum == 1){
-            var cpuChoice = "Paper"
-        } else if (cpuNum == 2){;
-            var cpuChoice = "Scissors"
-        }
-        return cpuChoice
+function getComputerChoice() {
+    let randomNumber = Math.floor(Math.random()*100);
+    var cpuNum = randomNumber % 3
+    if (cpuNum == 0){;
+        var cpuChoice = "Rock";
+    } else if (cpuNum == 1){
+        var cpuChoice = "Paper"
+    } else if (cpuNum == 2){;
+        var cpuChoice = "Scissors"
     }
-    const computerSelection = getComputerChoice()
+    return cpuChoice
+    }
+
+
     
 //player plays rock
-
+function playRound (playerSelection, computerSelection = getComputerChoice()) {
     if (computerSelection == 'Rock' && playerSelection == 'Rock'){
-        alert("The Computer played Rock. It's a draw!");
-        return 'D';
+        return 'Draw';
     } else if (computerSelection == 'Paper' && playerSelection == 'Rock') {
-        alert("The Computer played Paper. You lose!");
-        return 'L';
+        return 'Loss';
     } else if (computerSelection == 'Scissors' && playerSelection == 'Rock') {
-        alert("The Computer played Scissors. You win!");
-        return 'W';
+        return 'Win';
 
 //player plays paper
 
     } else if (computerSelection == 'Rock' && playerSelection == 'Paper') {
-        alert("The Computer played Rock. You Win!");
-        return 'W';
+        return 'Win';
     } else if (computerSelection =='Paper' && playerSelection =='Paper') {
-        alert("The Computer played Paper. It's a draw!");
-        return 'D';
+        return 'Draw';
     } else if (computerSelection =='Scissors' && playerSelection =='Paper') {
-        alert('The Computer played Scissors. You lose!');
-        return 'L';
+        return 'Loss';
 
 //player plays scissors
 
     } else if (computerSelection == "Rock" && playerSelection == "Scissors") {
-        alert("The Computer played Rock. You lose!");
-        return 'L';
+        return 'Loss';
     } else if (computerSelection == 'Paper' && playerSelection == "Scissors") {
-        alert("The Computer played Paper. You win!");
-        return 'W';
+        return 'Win';
     } else if (computerSelection == 'Scissors' && playerSelection =='Scissors') {
-        alert("The Computer played Scissors. It's a draw!")
-        return 'D';
+        return 'Draw';
 
 //fail-safe
         
     } else {
-        alert("Something went wrong.. try again!")
+        return "Something went wrong.. try again!"
     }
 }
 
-function game() {
-    var playerScore = 0
-    var computerScore = 0
-
-    while (playerScore < 5 && computerScore < 5) {
-        gameResult = playRound()
-        if (gameResult == 'W') {
-            playerScore += 1
-        } else if (gameResult == 'L') {
-            computerScore += 1
-    }}
-    if (playerScore == 5) {
-        alert('You won five games, congratulations!')
-    } else if (computerScore == 5) {
-        alert('The computer won five games, too bad!')
+function keepScore(roundResult) {
+    if (roundResult === 'Win') {
+        ++playerScore;
+        return playerScore;
+        return computerScore;
+    } else if (roundResult === 'Loss') {
+        ++computerScore;
+        return playerScore;
+        return computerScore;
+    } else {
+        return playerScore;
+        return computerScore;
     }
 }
+
+function displaySelection(playerSelection, computerSelection) {
+    computerChoice = computerSelection
+    playerChoice = playerSelection
+    const div = document.createElement('div');
+    const para = document.createElement('p');
+    para.textContent= `You chose ${playerChoice} and the computer chose ${computerChoice}.`;
+    div.appendChild(para);
+}
+
+function displayScore(roundResult, playerScore, computerScore) {
+    const div = document.querySelector('div');
+    const para = document.createElement('p');
+    para.textContent = `${roundResult}: Your score is ${playerScore}, the CPU's score is ${computerScore}`
+    div.appendChild(para)
+}
+
+buttons.forEach((button) => {
+    button.addEventListener('click', (e) => {
+        playerSelection = button.id;
+        computerSelection = getComputerChoice();
+        displaySelection(playerSelection, computerSelection);
+        let roundResult = playRound(playerSelection, computerSelection)
+        keepScore(roundResult);
+        displayScore(roundResult, playerScore, computerScore);
+        })
+    })
+
